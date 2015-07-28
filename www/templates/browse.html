@@ -1,0 +1,20 @@
+<ion-view view-title="Browse">
+  <ion-content class="has-header">
+    <h1>Locate My Stuff</h1>
+      <div style="height:100%">
+        <map center="3.0840491, 101.5604828" data-tap-disabled="true" on-click="addMarker(event)">
+          <!-- <marker title={{marker.title}} position="[{{ marker.latitude }}, {{ marker.longitude }}]" ng-repeat="marker in markers" on-click="showInfoWindow(event, marker)"></marker> -->
+          <!-- <marker title={{marker.title}} position="[{{ marker.latitude }}, {{ marker.longitude }}]" ng-repeat="marker in markers"></marker> -->
+         <!-- <marker position="[{{ marker.latitude }}, {{ marker.longitude }}]" icon="{{ marker.icon }}" ng-repeat="marker in markers" on-click="showInfoWindow(event, marker)"></marker>-->
+          <marker position="[{{ marker.latitude }}, {{ marker.longitude }}]" ng-repeat="marker in markers"></marker>
+          <!--  <info-window id="marker-info" ng-repeat-end>
+                <h4>
+                Student - {{ marker }}<br>
+                MyPhone at [[{{this.getPosition()}}]]</h4>
+            </info-window>-->
+
+        </map>
+      </div>
+      {{markers}}
+  </ion-content>
+</ion-view>

@@ -1,0 +1,45 @@
+<ion-side-menus enable-menu-with-back-views="false">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-stable">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-stable">
+      <h1 class="title">Location</h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+
+<!-- <h1 class="title">Selection</h1> <div class="button button-clear" ng-click="modal.hide()"><span class="icon ion-close"></span></div>-->
+        <ion-item button button-clear icon ion-close menu-close ng-repeat="marker in markers" ng-click="#">
+            <div wrap> {{ marker.remark }} </div>
+            <span class="icon ion-close">
+                </span>
+        </ion-item>
+          <!--
+        <ion-item menu-close ng-click="login()">
+          Login
+        </ion-item>
+        <ion-item menu-close href="#/app/search">
+          Search
+        </ion-item>
+        <ion-item menu-close href="#/app/browse">
+          Browse
+        </ion-item>
+        <ion-item menu-close href="#/app/playlists">
+          Playlists
+        </ion-item>
+        -->
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+</ion-side-menus>
