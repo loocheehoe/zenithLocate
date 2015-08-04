@@ -55,11 +55,16 @@ angular.module('starter.controllers', ['ngMap', 'ngCordova'])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('LocateCtrl', function($scope, $ionicPopup, $timeout, $cordovaGeolocation, $cordovaNetwork) {
+.controller('LocateCtrl', function($scope, $ionicPopup, $ionicModal, $timeout, $cordovaGeolocation, $cordovaNetwork) {
 //.controller('LocateCtrl', ['ngCordova'], function($scope) {
 
-
         $scope.markers = [];
+        $scope.markerIcon = [
+            {id:1, name: 'rilakkuma', url: 'http://www.leejoowon.com/wp-content/uploads/2015/05/5752.png'},
+            {id:2, name: 'keroppi', url: 'http://images1.fanpop.com/images/photos/2300000/Keroppi-keroppi-2344002-75-75.gif' },
+            {id:3, name: 'keroro', url: 'https://4rchiviz4rd.files.wordpress.com/2008/10/keroro-gunso.png'}]
+
+
 
         document.addEventListener("deviceready", function () {
 
@@ -80,13 +85,13 @@ angular.module('starter.controllers', ['ngMap', 'ngCordova'])
                 var offlineState = networkState;
 
                 $scope.showAlert = function() {
-                    var alertPopup = $ionicPopup.alert({
-                        title: 'Network not found',
-                        template: 'Please turn on data or wifi'
-                    });
-                    alertPopup.then(function(res) {
-                        //console.log('Thank you for not eating my delicious ice cream cone');
-                    });
+                    //var alertPopup = $ionicPopup.alert({
+                    //    title: 'Network not found',
+                    //    template: 'Please turn on data or wifi'
+                    //});
+                    //alertPopup.then(function(res) {
+                    //    //console.log('Thank you for not eating my delicious ice cream cone');
+                    //});
                 };
 
 
@@ -241,25 +246,10 @@ angular.module('starter.controllers', ['ngMap', 'ngCordova'])
         $scope.checkMap();
 
         $scope.addMarker = function (event) {
-/*
-            var myPopup = $ionicPopup.prompt({
-                title: 'Your title text',
-                template: 'Please enter your text here',
-                inputType: 'text',
-                inputPlaceholder: 'Your text here'
-            });
 
-            // after the user typed something, this result callback will be called
-            myPopup.then(function(userText) {
-                // userText contains the text which your user entered
-                // now you can save the data with your factory
-                messageAlert.saveData(incomingURL, userText);
-            });
-*/
-            $scope.data = {};
+            $scope.data = [];
 
             var myPopup = $ionicPopup.show({
-
                 template: '<input type="text" ng-model="data.location">',
                 title: 'Enter Your Remark',
                 scope: $scope,
@@ -281,39 +271,23 @@ angular.module('starter.controllers', ['ngMap', 'ngCordova'])
             });
 
 
-
             myPopup.then(function(res) {
-                //console.log('Tapped!', res);
-                var remark = res;
 
-
-            //---
-
-            //console.log(event.latLng);
+            var remark = res;
             var geoLocate = '';
-            /*
-            $scope.markers.push({
-                latitude: event.latLng.A,
-                longitude: event.latLng.F,
-                icon: ''});
-*/
-            geoLocate = {latitude: event.latLng.A, longitude: event.latLng.F, icon: '', remark: res};
 
-            // if agree with ionicPopup and data only add
+            geoLocate = {latitude: event.latLng.A, longitude: event.latLng.F, iconImage: '', remark: remark};
+
             $scope.markers.push(geoLocate); //2
             //localStorage.setItem("lastname", "Smith");
             //localStorage.setItem("locatemystuff");
             //localStorage.setItem("locatemystuff", JSON.stringify(geoLocate));
 
-            //call back localStorage into variable
-            //then add into variable and save localStorage
             var geoHistory = [];
             var geoString = JSON.parse(localStorage.getItem("locatemystuff"));
-            //console.log(geoString);
-
 
             //geoHistory.push(geoString); //problem is here
-            if(geoString.length > 1) { //2.5 problem
+            if (geoString.length > 1) { //2.5 problem
                 for (var elem in geoString) {
                     geoHistory.push(geoString[elem]);
                 }
@@ -329,31 +303,72 @@ angular.module('starter.controllers', ['ngMap', 'ngCordova'])
             localStorage.clear("locatemystuff");
             localStorage.setItem("locatemystuff", JSON.stringify(geoHistory));
 
-            console.log(geoHistory);
+            //console.log(geoHistory);
+                })
+        }
+
+        $ionicModal.fromTemplateUrl('my-stuff.html', {
+            scope: $scope,
+            //animation: 'slide-in-up'
+            animation: 'fade-in'
+        }).then(function(modal) {
+            $scope.modal = modal;
+        });
+        $scope.openModal = function() {
+            //if(marker.iconImage == ''){
+            //    $scope.data = {selectedItem:1};
+            //} else {
+            //    $scope.data = {selectedItem:parseInt(marker.iconImage)};
+            //}
+            //$scope.deviceEdit = device;
+            $scope.modal.show();
+        };
+        $scope.closeModal = function() {
+            $scope.modal.hide();
+        };
+        //Cleanup the modal when we're done with it!
+        $scope.$on('$destroy', function() {
+            $scope.modal.remove();
+        });
+        // Execute action on hide modal
+        $scope.$on('modal.hidden', function() {
+            // Execute action
+        });
+        // Execute action on remove modal
+        $scope.$on('modal.removed', function() {
+            // Execute action
+        });
 
 
+        $scope.removeMarker = function(idx){
 
-            //find object in JSON
-            //for(var elem in array){ array[elem]}
-            //add object in JSON by push
+            //iterate for the title name
 
-            //to remove use array.splice(index, 1)
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Removing a marker',
+                template: 'Confirm to remove?'
             });
+            confirmPopup.then(function(res) {
 
-            };
+                if(res) {
+                    $scope.markers.splice(idx, 1);
 
+                    var geoHistoryS = [];
+                    var geoStringS = JSON.parse(localStorage.getItem("locatemystuff"));
+                    geoHistoryS.push(geoStringS);1
+                    geoHistoryS.splice(idx, 1);
+                    localStorage.clear("locatemystuff");
+                    localStorage.setItem("locatemystuff", JSON.stringify(geoHistoryS));
+                }
+
+
+                //find object in JSON
+                //for(var elem in array){ array[elem]}
+                //add object in JSON by push
+
+                //to remove use array.splice(index, 1)
+
+
+            });
+        };
 });
-
-
-/*
- google.maps.event.addListener(map, 'click', function(event) {
- placeMarker(event.latLng);
- });
-
- function placeMarker(location) {
- var marker = new google.maps.Marker({
- position: location,
- map: map
- });
- }
- */

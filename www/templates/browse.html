@@ -1,4 +1,4 @@
-<ion-view view-title="Browse">
+<ion-view view-title="LocateMyStuff">
   <ion-content class="has-header">
     <h1>Locate My Stuff</h1>
       <div style="height:100%">
@@ -15,6 +15,27 @@
 
         </map>
       </div>
-      {{markers}}
+      <script id="my-stuff.html" type="text/ng-template">
+          <ion-modal-view>
+              <ion-header-bar>
+                  <h1 class="title">Add New Location</h1>
+                  <div class="button button-clear" ng-click="modal.hide()">
+                      <span class="icon ion-close"></span></div>
+              </ion-header-bar>
+              <ion-content>
+                  <label class="item item-input">
+                      <span class="input-label">Remark :</span>
+                      <input ng-model="marker.remark" type="text">
+                  </label>
+                  <label class="item item-input item-select">
+                      <span class="input-label">icon :</span>
+                      <select ng-model="data.selectedItem" ng-options="item.value as item.type for item in markerIcon"></select>
+                </label>
+                <button class="button button-full" ng-click="closeModal()">Keep</button>
+
+              </ion-content>
+          </ion-modal-view>
+      </script>
+
   </ion-content>
 </ion-view>
